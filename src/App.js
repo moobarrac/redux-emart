@@ -1,24 +1,32 @@
-import logo from './logo.svg';
-import './App.css';
+import "./App.css";
+import Home from "./component/Home";
+import Navbar from "./component/Navbar";
+import Products from "./component/Products";
+import { Route, Routes } from "react-router-dom";
+import SingleProduct from "./component/SingleProduct";
+import { legacy_createStore as createStore } from "redux";
+import { reducer } from "./redux/reducer";
+import { Provider } from "react-redux";
+import Cart from "./component/Cart";
 
 function App() {
+  const initialStore = {
+    cart: [],
+  };
+  const store = createStore(reducer, initialStore);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <>
+      <Provider store={store}>
+        <Navbar />
+        <Routes>
+          <Route path="/" exact element={<Home />} />
+          <Route path="/products" exact element={<Products />} />
+          <Route path="/products/:id" exact element={<SingleProduct />} />
+          <Route path="/cart" exact element={<Cart />} />
+        </Routes>
+      </Provider>
+    </>
   );
 }
 
